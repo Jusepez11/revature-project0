@@ -1,5 +1,5 @@
 from __future__ import annotations
-import db
+import db.db
 class Expense:
     def __init__(self, id:int, user_id:int, amount:int, description:str, date:str) -> None:
         self.id = id

@@ -1,5 +1,5 @@
 from __future__ import annotations
-import db
+import db.db
 class Approval:
     def __init__(self, id:int, expense_id:int, status:str, reviewer:int, comment:str, review_date:str) -> None:
         self.id = id

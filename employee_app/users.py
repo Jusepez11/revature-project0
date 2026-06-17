@@ -1,5 +1,5 @@
 from __future__ import annotations
-import db
+import db.db
 class User:
     def __init__(self, id:int, username:str, password:str, role:str) -> None:
         self.id = id
