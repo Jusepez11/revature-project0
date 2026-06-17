@@ -1,5 +1,9 @@
+from db.users import User
+from db.approvals import Approval
+from db.expenses import Expense
+
 def validate_login(username, password):
-    # TODO: finish this logic
+
     return True
 
 def dashboard(username):
@@ -27,19 +31,19 @@ def dashboard(username):
         if user_command == 1:
             # TODO: implement logic to submit a new expense report
             pass
-        if user_command == 2:
+        elif user_command == 2:
             # TODO: implement logic to view the status of your submitted expense reports
             pass
-        if user_command == 3:
+        elif user_command == 3:
             # TODO: implement logic to edit a pending expense report
             pass
-        if user_command == 4:
+        elif user_command == 4:
             # TODO: implement logic to delete a pending expense report
             pass
-        if user_command == 5:
+        elif user_command == 5:
             # TODO: implement logic to view a history of all approved and denied expense reports
             pass
-        if user_command == 6:
+        elif user_command == 6:
             running_dash = False
 
 def main():
