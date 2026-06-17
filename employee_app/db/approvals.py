@@ -1,5 +1,5 @@
 from __future__ import annotations
-from db import get_connection
+import db
 class Approval:
     def __init__(self, id:int, expense_id:int, status:str, reviewer:int, comment:str, review_date:str) -> None:
         self.id = id
@@ -11,7 +11,7 @@ class Approval:
 
 
     def create(self, approval:Approval):
-        conn = get_connection()
+        conn = db.get_connection()
         cursor = conn.execute(
             """
             INSERT INTO approvals (expense_id, status, reviewer, comment, review_date)
@@ -26,7 +26,7 @@ class Approval:
         return approval
     
     def get_all(self):
-        conn = get_connection()
+        conn = db.get_connection()
         cursor = conn.execute(
             """
             SELECT * FROM approvals
@@ -51,7 +51,7 @@ class Approval:
         return approvals
 
     def get_from_id(self,id:int):
-        conn = get_connection()
+        conn = db.get_connection()
         cursor = conn.execute(
         """
         SELECT * FROM approvals WHERE id = ?

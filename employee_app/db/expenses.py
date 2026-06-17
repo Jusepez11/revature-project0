@@ -1,5 +1,5 @@
 from __future__ import annotations
-from db import get_connection
+import db
 class Expense:
     def __init__(self, id:int, user_id:int, amount:int, description:str, date:str) -> None:
         self.id = id
@@ -10,7 +10,7 @@ class Expense:
 
 
     def create(self, expense:Expense):
-        conn = get_connection()
+        conn = db.get_connection()
         cursor = conn.execute(
             """
             INSERT INTO expenses (user_id, amount, description, date)
@@ -25,7 +25,7 @@ class Expense:
         return expense
     
     def get_all(self):
-        conn = get_connection()
+        conn = db.get_connection()
         cursor = conn.execute(
             """
             SELECT * FROM expenses
@@ -49,7 +49,7 @@ class Expense:
         return expenses
 
     def get_from_id(self,id:int):
-        conn = get_connection()
+        conn = db.get_connection()
         cursor = conn.execute(
         """
         SELECT * FROM expenses WHERE id = ?

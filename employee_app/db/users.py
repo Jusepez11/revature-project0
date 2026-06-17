@@ -1,5 +1,5 @@
 from __future__ import annotations
-from db import get_connection
+import db
 class User:
     def __init__(self, id:int, username:str, password:str, role:str) -> None:
         self.id = id
@@ -9,7 +9,7 @@ class User:
 
 
     def create(self, user:User):
-        conn = get_connection()
+        conn = db.get_connection()
         cursor = conn.execute(
             """
             INSERT INTO users (username, password_hash, role)
@@ -24,7 +24,7 @@ class User:
         return user
     
     def get_all(self):
-        conn = get_connection()
+        conn = db.get_connection()
         cursor = conn.execute(
             """
             SELECT * FROM users
@@ -47,7 +47,7 @@ class User:
         return users
 
     def get_from_id(self,id:int):
-        conn = get_connection()
+        conn = db.get_connection()
         cursor = conn.execute(
         """
         SELECT * FROM users WHERE id = ?
@@ -68,7 +68,7 @@ class User:
         )
     
     def get_from_username_password(self, username, password):
-        conn = get_connection()
+        conn = db.get_connection()
         cursor = conn.execute(
         """
         SELECT * FROM users WHERE username = ? AND password = ?
