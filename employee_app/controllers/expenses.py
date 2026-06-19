@@ -74,6 +74,30 @@ def get_all():
 
     return expenses
 
+def get_all_by_user(id:int):
+    conn = get_connection()
+    cursor = conn.execute(
+        """
+        SELECT * FROM expenses where user_id = ?
+        """,
+        (id,)
+    )
+
+    rows = cursor.fetchall()
+    expenses = []
+
+    for row in rows:
+        expenses.append(Expense(
+            id=row[0],
+            user_id=row[1],
+            amount=row[2],
+            description=row[3],
+            date=row[4]
+        ))
+
+    conn.close()
+
+    return expenses
 
 def get_from_id(id:int):
     conn = get_connection()
