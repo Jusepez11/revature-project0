@@ -1,0 +1,102 @@
+from employee_app.db.db import get_connection
+from employee_app.models.expenses import Expense
+
+def create(expense:Expense):
+    conn = get_connection()
+    cursor = conn.execute(
+        """
+        INSERT INTO expenses (user_id, amount, description, date)
+        VALUES (?, ?, ?, ?)
+        """,
+        (expense.user_id, expense.amount, expense.description, expense.date)
+    )
+
+    expense.id = cursor.lastrowid
+    conn.commit()
+    conn.close()
+
+    return expense
+
+# is called like ex_expense.edit() after modifying values
+
+def edit(expense):
+    conn = get_connection()
+    conn.execute(
+        """
+        UPDATE expenses
+        SET amount = ?, description = ?, date = ?
+        WHERE id = ?
+        """,
+        (expense.amount, expense.description, expense.date, expense.id)
+    )
+
+    conn.commit()
+    conn.close()
+
+# needs check before hand to see if id exists and status is pending
+
+def remove(id:int):
+    conn = get_connection()
+    conn.execute(
+        """
+        DELETE FROM expenses WHERE id = ?
+        """,
+        (id,)
+    )
+
+    conn.commit()
+    conn.close()
+
+# added  so it can be called Expense.get_all()
+# rather than ex_expense.get_all()
+
+def get_all():
+    conn = get_connection()
+    cursor = conn.execute(
+        """
+        SELECT * FROM expenses
+        """
+    )
+
+    rows = cursor.fetchall()
+    expenses = []
+
+    for row in rows:
+        expenses.append(Expense(
+            id=row[0],
+            user_id=row[1],
+            amount=row[2],
+            description=row[3],
+            date=row[4]
+        ))
+
+    conn.close()
+
+    return expenses
+
+
+def get_from_id(id:int):
+    conn = get_connection()
+    cursor = conn.execute(
+    """
+    SELECT * FROM expenses WHERE id = ?
+    """, 
+    (id,)
+    )
+
+    row = cursor.fetchone()
+    conn.close()
+
+
+    if row is None:
+        return None
+
+    return Expense(
+            id=row[0],
+            user_id=row[1],
+            amount=row[2],
+            description=row[3],
+            date=row[4]
+    )
+
+
