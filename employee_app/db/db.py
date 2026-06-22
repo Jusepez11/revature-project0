@@ -1,4 +1,5 @@
 import sqlite3
+from .seed import seed_db
 
 DB_NAME = "my.db"
 
@@ -9,7 +10,7 @@ def get_connection():
     return conn
 
 def init_db():
-    with sqlite3.connect("my.db") as conn:
+    with sqlite3.connect(DB_NAME) as conn:
         conn.execute("""
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -43,4 +44,4 @@ def init_db():
             )
         """)
 
-
+        seed_db(conn)

@@ -1,0 +1,51 @@
+def seed_db(conn):
+    cursor = conn.execute("SELECT COUNT(*) FROM users")
+    if cursor.fetchone()[0] > 0:
+        return
+
+    users = [
+        (1, "alice", "password123", "Employee"),
+        (2, "bob", "password123", "Employee"),
+        (3, "carla", "password123", "Employee"),
+        (4, "manager", "admin123", "Manager"),
+    ]
+
+    expenses = [
+        (1, 1, 42.75, "Client lunch", "2026-06-01"),
+        (2, 1, 180.00, "Conference registration", "2026-06-04"),
+        (3, 2, 65.50, "Office supplies", "2026-06-05"),
+        (4, 2, 320.00, "Hotel stay", "2026-06-08"),
+        (5, 3, 28.25, "Taxi fare", "2026-06-10"),
+    ]
+
+    approvals = [
+        (1, 1, "approved", 4, "Approved for client meeting.", "2026-06-02"),
+        (2, 2, "pending", None, None, None),
+        (3, 3, "denied", 4, "Receipt was missing.", "2026-06-06"),
+        (4, 4, "pending", None, None, None),
+        (5, 5, "approved", 4, "Approved travel expense.", "2026-06-11"),
+    ]
+
+    conn.executemany(
+        """
+        INSERT INTO users (id, username, password, role)
+        VALUES (?, ?, ?, ?)
+        """,
+        users,
+    )
+
+    conn.executemany(
+        """
+        INSERT INTO expenses (id, user_id, amount, description, date)
+        VALUES (?, ?, ?, ?, ?)
+        """,
+        expenses,
+    )
+
+    conn.executemany(
+        """
+        INSERT INTO approvals (id, expense_id, status, reviewer, comment, review_date)
+        VALUES (?, ?, ?, ?, ?, ?)
+        """,
+        approvals,
+    )
