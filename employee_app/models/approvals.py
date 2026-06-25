@@ -1,5 +1,5 @@
 class Approval:
-    def __init__(self, expense_id:int, status:str, reviewer:int, comment:str, review_date:str, id=None) -> None:
+    def __init__(self, expense_id:int, status:str="pending", reviewer:int=None, comment:str=None, review_date:str=None, id=None) -> None:
         self.id = id
         self.expense_id = expense_id
         self.status = status
