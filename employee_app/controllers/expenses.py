@@ -20,7 +20,7 @@ def create(expense:Expense):
 
 def edit(expense):
     conn = get_connection()
-    conn.execute(
+    cursor = conn.execute(
         """
         UPDATE expenses
         SET amount = ?, description = ?, date = ?
@@ -29,8 +29,14 @@ def edit(expense):
         (expense.amount, expense.description, expense.date, expense.id)
     )
 
+    rows_updated = cursor.rowcount
     conn.commit()
-    conn.close()
+    conn.close()    
+
+    if rows_updated == 0:
+        return None
+
+    return expense
 
 
 def remove(id:int):
@@ -145,5 +151,4 @@ def get_from_id(id:int):
             description=row[3],
             date=row[4]
     )
-
 
