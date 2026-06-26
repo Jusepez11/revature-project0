@@ -1,3 +1,6 @@
+import dao.UserDao;
+
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class manager_terminal
@@ -6,7 +9,17 @@ public class manager_terminal
 
     private static boolean validateLogin(String username, String password)
     {
-        return true;
+        UserDao userDao = new UserDao();
+
+        try
+        {
+            return userDao.validateManagerLogin(username, password);
+        }
+        catch (SQLException e)
+        {
+            System.out.println("Unable to validate login: " + e.getMessage());
+            return false;
+        }
     }
 
     private static void dashboard(String username)
