@@ -4,14 +4,14 @@ public class User {
     int id;
     String username, password, role;
 
-    User(){
+    public User(){
         id = 0;
         username = "";
         password = "";
         role = "";
     }
 
-    User(int id, String username, String password, String role){
+    public User(int id, String username, String password, String role){
         this.id = id;
         this.username = username;
         this.password = password;

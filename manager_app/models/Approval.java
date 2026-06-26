@@ -4,7 +4,7 @@ public class Approval {
     int id, expense_id, reviewer;
     String status, comment, review_date;
 
-    Approval(){
+    public Approval(){
         id = 0;
         expense_id = 0;
         reviewer = 0;
@@ -13,7 +13,7 @@ public class Approval {
         review_date = "";
     }
 
-    Approval( int id, int expense_id, String status, int reviewer, String comment, String review_date){
+    public Approval(int id, int expense_id, String status, int reviewer, String comment, String review_date){
         this.id = id;
         this.expense_id = expense_id;
         this.reviewer = reviewer;

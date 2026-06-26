@@ -5,7 +5,7 @@ public class Expense {
     float amount;
     String description, date;
     
-    Expense(){
+    public Expense(){
         id = 0;
         user_id = 0;
         amount = 0f;
@@ -13,7 +13,7 @@ public class Expense {
         date = "";
     }
 
-    Expense(int id, int user_id, float amount, String description, String date){
+    public Expense(int id, int user_id, float amount, String description, String date){
         this.id = id;
         this.user_id = user_id;
         this.amount = amount;
