@@ -1,5 +1,5 @@
-from employee_app.db.db import get_connection
-from employee_app.db.db import init_db
+from db import get_connection
+from db import init_db
 
 def seed(conn):
     cursor = conn.execute("SELECT COUNT(*) FROM users")

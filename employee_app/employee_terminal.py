@@ -1,10 +1,10 @@
-from .models.approvals import Approval
-from .models.expenses import Expense
-from .models.users import User
+from models.approvals import Approval
+from models.expenses import Expense
+from models.users import User
 
-from .controllers import approvals as controller_approval
-from .controllers import expenses as controller_expense
-from .controllers import users as controller_user
+from controllers import approvals as controller_approval
+from controllers import expenses as controller_expense
+from controllers import users as controller_user
 import os
 
 def submit_expense(user:User):
@@ -13,8 +13,10 @@ def submit_expense(user:User):
     
     print(f"{'='*25}\nExpense Report Submission\n{'='*25}\n")
     while True:
-        amount = input("Please enter the amount of the expense: $")
+        amount = input("Please enter the amount of the expense (or q to exit): $")
         try:
+            if amount.casefold() == 'q':
+                break
             amount = int(amount)
             break
         except ValueError:
@@ -23,9 +25,8 @@ def submit_expense(user:User):
     description = input("Please enter the description of the expense: ")
     date = input("Please enter the date of the expense: ") 
     
-    controller_expense.create(Expense(user.id, amount, description, date))
-    # TODO: create new approval, default pending
-    #controller_approval.create(Approval(,"pending", ))
+    expense = controller_expense.create(Expense(user.id, amount, description, date))
+    controller_approval.create(Approval(expense.id))
     print("\n")
 
 #todo
@@ -33,7 +34,7 @@ def get_all_non_pending_user(user:User):
     os.system('cls' if os.name == 'nt' else 'clear')
     print(f"{'='*25}\n{user.username}'s Approved or Denied Expense Reports\n{'='*25}\n")
     for expense in controller_expense.get_all_non_pending_user(user.id):
-        print(f"{expense} Status: {controller_approval.get_from_id(expense.id).status}")
+        print(f"{expense} Status: {controller_approval.get_from_expenseid(expense.id).status}")
     print("\n")
 
 
@@ -47,7 +48,7 @@ def get_all_expenses(user:User):
     
     print(f"{'='*25}\n{user.username.capitalize()}'s Expense Reports\n{'='*25}\n")
     for expense in controller_expense.get_all_by_user(user.id):
-        print(f"{expense} Status: {controller_approval.get_from_id(expense.id).status}")
+        print(f"{expense} Status: {controller_approval.get_from_expenseid(expense.id).status}")
     print("\n")
     input("Press any key to go back to the main menu...")
 
@@ -81,7 +82,9 @@ def edit_expense(user:User):
 
     expense.description = input(f"Please enter the new description: ")
     expense.date = input(f"Please enter the new date : ")
-    controller_expense.edit(expense)
+    new_expense = controller_expense.edit(expense)
+    if (controller_approval.get_from_expenseid(new_expense.id)) != "pending":
+        controller_approval.create(Approval(new_expense.id))
 
 def delete_expense(user:User):
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -128,16 +131,21 @@ def dashboard(user:User):
             print("\nInvalid input. Please enter a valid number.")
             continue
         
-        if user_command == 1:
+        if user_command == 1:#create
             submit_expense(user)
+
         elif user_command == 2:
             get_all_expenses(user)
+
         elif user_command == 3:
             edit_expense(user)
+
         elif user_command == 4:
             delete_expense(user)
+
         elif user_command == 5:
             get_all_non_pending_user(user)
+
         elif user_command == 6:
             running_dash = False
 
