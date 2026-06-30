@@ -60,9 +60,9 @@ public class UserDao {
         return users;
     }
 
-    public boolean validateManagerLogin(String username, String password) throws SQLException {
+    public User validateManagerLogin(String username, String password) throws SQLException {
         String sql = """
-            SELECT 1
+            SELECT *
             FROM users
             WHERE username = ?
               AND password = ?
@@ -74,10 +74,13 @@ public class UserDao {
             statement.setString(1, username);
             statement.setString(2, password);
 
-            try (ResultSet resultSet = statement.executeQuery()) {
-                return resultSet.next();
+           try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return mapUser(resultSet);
+                }
             }
         }
+        return null;
     }
 
     private User mapUser(ResultSet resultSet) throws SQLException {
