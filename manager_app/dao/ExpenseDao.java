@@ -43,6 +43,31 @@ public class ExpenseDao {
         return expenses;
     }
 
+    public List<Expense> findByStatus(String status) throws SQLException {
+        String sql = """
+                        SELECT e.* 
+                        FROM expenses e 
+                        JOIN approvals a
+                        on e.id = a.expense_id
+                        where a.status = ?
+                        """;
+        List<Expense> expenses = new ArrayList<>();
+
+        try (Connection connection = Database.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            
+            statement.setString(1, status);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    expenses.add(mapExpense(resultSet));
+                }
+            }
+        }
+
+        return expenses;
+    }
+
     public List<Expense> findByUserId(int userId) throws SQLException {
         String sql = "SELECT * FROM expenses WHERE user_id = ?";
         List<Expense> expenses = new ArrayList<>();
@@ -50,6 +75,24 @@ public class ExpenseDao {
         try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    expenses.add(mapExpense(resultSet));
+                }
+            }
+        }
+
+        return expenses;
+    }
+
+    public List<Expense> findByDate(String date) throws SQLException {
+        String sql = "SELECT * FROM expenses WHERE date = ?";
+        List<Expense> expenses = new ArrayList<>();
+
+        try (Connection connection = Database.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, date);
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
