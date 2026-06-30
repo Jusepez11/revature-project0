@@ -1,8 +1,8 @@
 # TODO REQUIREMENT MANAGER SIDE
-- [] View pending expenses
-- [] View all expenses
-- [] Approve/deny expenese
-- [] Leave a note for an expnese
+- [X] View pending expenses
+- [X] View all expenses
+- [x] Approve/deny expenese
+- [x] Leave a note for an expnese
 - [] Password not visible while typing
 
 
